@@ -17,18 +17,18 @@ const Header = styled.h2`
     margin-bottom: 10px;
 `;
 
-export const Menu = props => (
+export const Menu = ({setOpenItem}) => (
     <MenuStyled>
         <MenuBanner/>
 
         <section>
             <Header>Бургеры</Header>
-            <ListItem itemList={dbMenu.burger}/>
+            <ListItem itemList={dbMenu.burger} setOpenItem={setOpenItem}/>
         </section>
 
         <section>
-            <Header>Напитки</Header>
-            <ListItem itemList={dbMenu.other} />
+            <Header>Напитки и Снэки</Header>
+            <ListItem itemList={dbMenu.other} setOpenItem={setOpenItem}/>
         </section>
     </MenuStyled>
 

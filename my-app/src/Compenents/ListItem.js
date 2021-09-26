@@ -16,6 +16,7 @@ const Item = styled.li`
     margin-bottom: 30px;
     padding: 15px;
     color: #fff;
+    cursor: pointer;
     &::after{
         content: '';
         position: absolute;
@@ -24,15 +25,21 @@ const Item = styled.li`
         left: 0;
         right: 0;
         background-color: #000;
+        transition: 0.5s all;
         opacity: 0.3;
         z-index: -1;
     }
+    &:hover{
+        &::after{
+            opacity: 0.7;
+        }
+    }
 `;
 
-export const ListItem = ({ itemList }) => (
+export const ListItem = ({ itemList, setOpenItem }) => (
     <List>
         {itemList.map(item=>(
-            <Item key={item.id} img={item.img}>
+            <Item key={item.id} img={item.img} onClick={() => setOpenItem(item)}>
                 <p>{item.name}</p>
                 <p>{item.price.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'})}</p>
             </Item>
