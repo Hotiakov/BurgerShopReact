@@ -10,7 +10,7 @@ import { MenuBanner } from "./MenuBanner";
 const MenuStyled = styled.main`
     background-color: #ccc;
     margin-top: 80px;
-    padding: 30px;
+    margin-left: 380px;
 `;
 
 const Header = styled.h2`
@@ -21,12 +21,12 @@ export const Menu = ({setOpenItem}) => (
     <MenuStyled>
         <MenuBanner/>
 
-        <section>
+        <section style={{padding: "0 30px"}}>
             <Header>Бургеры</Header>
             <ListItem itemList={dbMenu.burger} setOpenItem={setOpenItem}/>
         </section>
 
-        <section>
+        <section style={{padding: "0 30px"}}>
             <Header>Напитки и Снэки</Header>
             <ListItem itemList={dbMenu.other} setOpenItem={setOpenItem}/>
         </section>
