@@ -1,11 +1,11 @@
 import React from "react";
-import { GlobalStyle } from "./Compenents/Hooks/Styles/GlobalStyle";
-import { useOpenItem } from "./Compenents/Hooks/ModalWindow/useOpenItem";
-import { useOrders } from "./Compenents/Hooks/Order/useOrders";
-import { NavBar } from "./Compenents/Hooks/NavBar/NavBar";
-import { Menu } from './Compenents/Hooks/Menu/Menu';
-import { ModalWindow } from "./Compenents/Hooks/ModalWindow/ModalWindow";
-import { Order } from "./Compenents/Hooks/Order/Order";
+import { GlobalStyle } from "./Compenents/Styles/GlobalStyle";
+import { useOpenItem } from "./Compenents/Hooks/useOpenItem";
+import { useOrders } from "./Compenents/Hooks/useOrders";
+import { NavBar } from "./Compenents/NavBar/NavBar";
+import { Menu } from './Compenents/Menu/Menu';
+import { ModalWindow } from "./Compenents/ModalWindow/ModalWindow";
+import { Order } from "./Compenents/Order/Order";
 
 const App = () => {
 

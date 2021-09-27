@@ -1,6 +1,8 @@
 import React from "react";
 import styled from 'styled-components';
 
+import { addCurrency } from "../Functions/secondaryFunction";
+
 import { Button } from "../Styles/Button";
 
 import { ListOfOrders } from "./ListOfOrders";
@@ -48,18 +50,23 @@ const TotalStyled = styled.div`
     text-transform: uppercase;
 `;
 
-export const Order = ({orders}) => (
-    <OrderStyled>
-        <Title>Ваш заказ</Title>
-        {
-            !orders.length ? <NoOrder/> : <ListOfOrders orders={orders}/>
-        }
-        <TotalStyled>
-            <TotalTitle>Итого</TotalTitle>
-            <p style={{flex: "0 1 10%"}}>5</p>
-            <p style={{flex: "0 1 30%"}}>850₽</p>
-            <p style={{flex: "0 1 5%"}}></p>
-        </TotalStyled>
-        <Button>Оформить</Button>
-    </OrderStyled>
-);
+export const Order = ({orders}) => {
+    
+    const countTotalPrice = () => orders.reduce((sum, order) => sum + order.price, 0 );
+    const countTotalCount = () => orders.reduce((counter, order) => counter + order.count, 0 );
+    return(
+        <OrderStyled>
+            <Title>Ваш заказ</Title>
+            {
+                !orders.length ? <NoOrder/> : <ListOfOrders orders={orders}/>
+            }
+            <TotalStyled>
+                <TotalTitle>Итого</TotalTitle>
+                <p style={{flex: "0 1 10%"}}>{countTotalCount()}</p>
+                <p style={{flex: "0 1 30%"}}>{addCurrency(countTotalPrice())}</p>
+                <p style={{flex: "0 1 5%"}}></p>
+            </TotalStyled>
+            <Button>Оформить</Button>
+        </OrderStyled>
+        )
+};

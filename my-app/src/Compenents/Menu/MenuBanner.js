@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 
-import banner from '../../../images/banner.png';
+import banner from '../../images/banner.png';
 
 const MenuBannerStyled = styled.div`
     width: 100%;
