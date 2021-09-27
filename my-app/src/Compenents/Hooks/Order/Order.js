@@ -1,7 +1,7 @@
 import React from "react";
 import styled from 'styled-components';
 
-import { Button } from "./Button";
+import { Button } from "../Styles/Button";
 
 import { ListOfOrders } from "./ListOfOrders";
 
@@ -15,6 +15,7 @@ const NoOrderStyled = styled.p`
     text-align: center;
     font-size: 21px;
     line-height: 25px;
+    flex: 1 0 auto;
 `;
 const OrderStyled = styled.section`
     position: fixed;
@@ -35,27 +36,28 @@ const NoOrder = () => (
 );
 
 const TotalTitle = styled.span`
-    flex: 1 0 65%;
+    flex: 1 0 45%;
 `;
 
 const TotalStyled = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 23px;
     text-transform: uppercase;
 `;
 
-export const Order = () => (
+export const Order = ({orders}) => (
     <OrderStyled>
         <Title>Ваш заказ</Title>
-        <NoOrder/>
-        <ListOfOrders/>
+        {
+            !orders.length ? <NoOrder/> : <ListOfOrders orders={orders}/>
+        }
         <TotalStyled>
             <TotalTitle>Итого</TotalTitle>
             <p style={{flex: "0 1 10%"}}>5</p>
-            <p style={{flex: "0 1 20%"}}>850₽</p>
+            <p style={{flex: "0 1 30%"}}>850₽</p>
             <p style={{flex: "0 1 5%"}}></p>
         </TotalStyled>
         <Button>Оформить</Button>

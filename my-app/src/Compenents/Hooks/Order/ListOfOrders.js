@@ -1,10 +1,10 @@
 import React from "react";
 import styled from 'styled-components';
 
-import trash from '../images/trash.svg';
+import trash from '../../../images/trash.svg';
 
 const Title = styled.span`
-    flex: 1 0 65%;
+    flex: 1 0 55%;
 `;
 
 const LI = styled.li`
@@ -23,20 +23,19 @@ const ListItem = ({name, count, price}) => (
     <LI>
         <Title>{name}</Title>
         <span style={{flex: "1 0 10%"}}>{count}</span>
-        <span style={{flex: "1 0 20%"}}>{price}₽</span>
+        <span style={{flex: "1 0 30%"}}>{price.toLocaleString('ru-RU', {style: 'currency', currency: 'RUB'})}</span>
         <img style={{flex: "1 0 5%", width: "100%"}} src={trash} alt="Удалить"/>
     </LI>
 );
 
 const ListOfOrdersStyled = styled.ul`
-    flex: 1 0 auto;
+    flex: 1 0 55%;
+    margin-bottom: 10px;
+    overflow-y: auto;
 `
 
-export const ListOfOrders = () => (
+export const ListOfOrders = ({orders}) => (
     <ListOfOrdersStyled>
-        <ListItem name="JS Burger" count="1" price="250"/>
-        <ListItem name="JS Burger" count="1" price="1250"/>
-        <ListItem name="JS Burger" count="10" price="250"/>
-        <ListItem name="JS Burger" count="10" price="1250"/>
+        {orders.map((order, index) => <ListItem key={index} name={order.name} count="1" price={order.price}/>)}
     </ListOfOrdersStyled>
 ); 
