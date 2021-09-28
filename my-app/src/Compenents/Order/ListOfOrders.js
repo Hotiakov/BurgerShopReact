@@ -5,8 +5,17 @@ import { addCurrency } from "../Functions/secondaryFunction";
 
 import trash from '../../images/trash.svg';
 
-const Title = styled.span`
+import { countTotalPrice as total } from '../Functions/secondaryFunction';
+
+
+const Title = styled.div`
     flex: 1 0 55%;
+`;
+
+const Toppings = styled.span`
+    display: block;
+    font-size: 14px;
+    color: #9A9A9A;
 `;
 
 const LI = styled.li`
@@ -21,12 +30,19 @@ const LI = styled.li`
     }
 `;
 
-const ListItem = ({name, count, price}) => (
+const toppingFilter = topping => {
+    return topping && topping.filter(item => item.checked).map(item => item.name).join(', ');
+}
+
+const ListItem = ({name, price, count, toppings}) => (
     <LI>
-        <Title>{name}</Title>
-        <span style={{flex: "1 0 10%"}}>{count}</span>
-        <span style={{flex: "1 0 30%"}}>{addCurrency(price)}</span>
-        <img style={{flex: "1 0 5%", width: "100%"}} src={trash} alt="Удалить"/>
+        <Title>
+            <span>{name}</span>
+            {toppings && <Toppings>{toppings}</Toppings>}
+        </Title>
+        <span style={{flex: "1 0 9%"}}>{count}</span>
+        <span style={{flex: "1 0 29%"}}>{addCurrency(price)}</span>
+        <div style={{flex: "1 0 7%"}}><img style={{height: "100%"}} src={trash} alt="Удалить"/></div>
     </LI>
 );
 
@@ -38,6 +54,6 @@ const ListOfOrdersStyled = styled.ul`
 
 export const ListOfOrders = ({orders}) => (
     <ListOfOrdersStyled>
-        {orders.map((order, index) => <ListItem key={index} name={order.name} count={order.count} price={order.price}/>)}
+        {orders.map((order, index) => <ListItem key={index} name={order.name} count={order.count} price={total(order)} toppings={toppingFilter(order.topping)}/>)}
     </ListOfOrdersStyled>
 ); 

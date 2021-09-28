@@ -7,6 +7,8 @@ import { Button } from "../Styles/Button";
 
 import { ListOfOrders } from "./ListOfOrders";
 
+import { countTotalPrice as total } from '../Functions/secondaryFunction';
+
 const Title = styled.h2`
     text-align: center;
     margin-bottom: 15px;
@@ -52,7 +54,7 @@ const TotalStyled = styled.div`
 
 export const Order = ({orders}) => {
     
-    const countTotalPrice = () => orders.reduce((sum, order) => sum + order.price, 0 );
+    const countTotalPrice = () => orders.reduce((sum, order) => sum + total(order), 0 );
     const countTotalCount = () => orders.reduce((counter, order) => counter + order.count, 0 );
     return(
         <OrderStyled>
@@ -62,9 +64,9 @@ export const Order = ({orders}) => {
             }
             <TotalStyled>
                 <TotalTitle>Итого</TotalTitle>
-                <p style={{flex: "0 1 10%"}}>{countTotalCount()}</p>
-                <p style={{flex: "0 1 30%"}}>{addCurrency(countTotalPrice())}</p>
-                <p style={{flex: "0 1 5%"}}></p>
+                <p style={{flex: "0 1 9%"}}>{countTotalCount()}</p>
+                <p style={{flex: "0 1 29%"}}>{addCurrency(countTotalPrice())}</p>
+                <p style={{flex: "0 1 7%"}}></p>
             </TotalStyled>
             <Button>Оформить</Button>
         </OrderStyled>

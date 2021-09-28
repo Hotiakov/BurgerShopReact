@@ -2,10 +2,15 @@ import React from "react";
 import styled from 'styled-components';
 
 import { addCurrency } from "../Functions/secondaryFunction";
+import { countTotalPrice } from "../Functions/secondaryFunction";
+import { useToppings } from "../Hooks/useToppings";
 
 import { Button } from "../Styles/Button";
 import { CountItem } from "./CountItem";
 import {useCount} from "../Hooks/useCount";
+import { Toppings } from "./Toppings";
+
+
 
 const Overlay = styled.div`
     position: fixed;
@@ -23,7 +28,7 @@ const Overlay = styled.div`
 const Modal = styled.div`
     position: relative;
     width: 45%;
-    height: 80%;
+    height: 90%;
     background-color: #fff;
 `;
 
@@ -47,10 +52,14 @@ const Content = styled.div`
     flex-direction: column;
     justify-content: space-between;
     height: calc(100% - 200px);
-    padding: 30px;
+    padding: 15px 30px;
 `;
 
-export const countTotalPrice = order => order.price*order.count;
+const TotalPrice = styled.div`
+        display: flex;
+        justify-content: space-between;
+    `;
+
 
 export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
     const closeModal = e => {
@@ -58,24 +67,20 @@ export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
             setOpenItem(null);
         }
     }
-    
+
+    const toppings = useToppings(openItem);
     const counter = useCount();
     const order = {
         ...openItem,
         count: counter.count,
-        price: openItem.price * counter.count,
+        price: openItem.price,
+        topping: toppings.toppings,
     }
 
     const addToOrder = () => {
         setOrders([...orders, order]);
         setOpenItem(null);
     }
-
-
-    const TotalPrice = styled.div`
-        display: flex;
-        justify-content: space-between;
-    `;
 
     return(
         <Overlay id="overlay" onClick={closeModal}>
@@ -87,9 +92,11 @@ export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
                         <ProductName>{addCurrency(openItem.price)}</ProductName>
                     </Text>
                     <CountItem {...counter}/>
+                    {openItem.toppings && <ProductName>Добавки</ProductName>}
+                    {openItem.toppings && <Toppings {...toppings}/>}
                     <TotalPrice>
-                        <span>Цена:</span> 
-                        <span>{addCurrency(order.price)}</span>
+                        <span>Итоговая цена:</span> 
+                        <span>{addCurrency(countTotalPrice(order))}</span>
                     </TotalPrice>
                     <Button onClick={addToOrder}>Добавить</Button>
                 </Content>
