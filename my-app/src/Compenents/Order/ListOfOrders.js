@@ -12,7 +12,7 @@ const Title = styled.div`
     flex: 1 0 55%;
 `;
 
-const Toppings = styled.span`
+const Choices = styled.span`
     display: block;
     font-size: 14px;
     color: #9A9A9A;
@@ -34,15 +34,20 @@ const toppingFilter = topping => {
     return topping && topping.filter(item => item.checked).map(item => item.name).join(', ');
 }
 
-const ListItem = ({name, price, count, toppings}) => (
-    <LI>
+const ListItem = ({order, index, deleteOrder, setOpenItem}) => (
+    <LI onClick={e => {
+            if(!e.target.closest('.trash'))
+                setOpenItem({...order, index})
+            }
+        }>
         <Title>
-            <span>{name}</span>
-            {toppings && <Toppings>{toppings}</Toppings>}
+            <span>{order.name}</span>
+            {toppingFilter(order.topping) && <Choices>{toppingFilter(order.topping)}</Choices>}
+            {order.choosen && <Choices>{order.choosen}</Choices>}
         </Title>
-        <span style={{flex: "1 0 9%"}}>{count}</span>
-        <span style={{flex: "1 0 29%"}}>{addCurrency(price)}</span>
-        <div style={{flex: "1 0 7%"}}><img style={{height: "100%"}} src={trash} alt="Удалить"/></div>
+        <span style={{flex: "1 0 9%"}}>{order.count}</span>
+        <span style={{flex: "1 0 29%"}}>{addCurrency(total(order))}</span>
+        <div className="trash" style={{flex: "1 0 7%", cursor: 'pointer'}} onClick={() => deleteOrder(index)}><img style={{height: "100%"}} src={trash} alt="Удалить"/></div>
     </LI>
 );
 
@@ -52,8 +57,9 @@ const ListOfOrdersStyled = styled.ul`
     overflow-y: auto;
 `
 
-export const ListOfOrders = ({orders}) => (
+export const ListOfOrders = ({orders, deleteOrder, setOpenItem}) => (
     <ListOfOrdersStyled>
-        {orders.map((order, index) => <ListItem key={index} name={order.name} count={order.count} price={total(order)} toppings={toppingFilter(order.topping)}/>)}
+        {orders.map((order, index) => <ListItem key={index} index={index} 
+        order={order} deleteOrder={deleteOrder} setOpenItem={setOpenItem}/>)}
     </ListOfOrdersStyled>
 ); 

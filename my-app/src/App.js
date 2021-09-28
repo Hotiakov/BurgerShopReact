@@ -17,7 +17,7 @@ const App = () => {
         <GlobalStyle/>
         <NavBar/>
         <Menu {...openItem}/>
-        <Order {...orders}/>
+        <Order {...orders} {...openItem}/>
         {openItem.openItem && <ModalWindow {...openItem} {...orders}/>}
     </>
 };

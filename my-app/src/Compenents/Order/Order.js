@@ -52,15 +52,14 @@ const TotalStyled = styled.div`
     text-transform: uppercase;
 `;
 
-export const Order = ({orders}) => {
-    
+export const Order = ({orders, deleteOrder, setOpenItem}) => {
     const countTotalPrice = () => orders.reduce((sum, order) => sum + total(order), 0 );
     const countTotalCount = () => orders.reduce((counter, order) => counter + order.count, 0 );
     return(
         <OrderStyled>
             <Title>Ваш заказ</Title>
             {
-                !orders.length ? <NoOrder/> : <ListOfOrders orders={orders}/>
+                !orders.length ? <NoOrder/> : <ListOfOrders orders={orders} deleteOrder={deleteOrder} setOpenItem={setOpenItem}/>
             }
             <TotalStyled>
                 <TotalTitle>Итого</TotalTitle>

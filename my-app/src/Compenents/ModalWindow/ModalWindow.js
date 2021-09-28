@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import { addCurrency } from "../Functions/secondaryFunction";
 import { countTotalPrice } from "../Functions/secondaryFunction";
 import { useToppings } from "../Hooks/useToppings";
+import {useCount} from "../Hooks/useCount";
+import { useChoices } from "../Hooks/useChoices";
 
 import { Button } from "../Styles/Button";
 import { CountItem } from "./CountItem";
-import {useCount} from "../Hooks/useCount";
 import { Toppings } from "./Toppings";
+import { Choices } from "./Choices";
 
 
 
@@ -69,12 +71,23 @@ export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
     }
 
     const toppings = useToppings(openItem);
-    const counter = useCount();
+    const choice = useChoices(openItem);
+    const counter = useCount(openItem);
+    const isEdit = openItem.index > -1;
+
     const order = {
         ...openItem,
         count: counter.count,
         price: openItem.price,
         topping: toppings.toppings,
+        choosen: choice.choice,
+    }
+
+    const editOrder = () => {
+        const newOrders = [...orders];
+        newOrders[openItem.index] = order;
+        setOrders(newOrders);
+        setOpenItem(null);
     }
 
     const addToOrder = () => {
@@ -92,13 +105,14 @@ export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
                         <ProductName>{addCurrency(openItem.price)}</ProductName>
                     </Text>
                     <CountItem {...counter}/>
-                    {openItem.toppings && <ProductName>Добавки</ProductName>}
                     {openItem.toppings && <Toppings {...toppings}/>}
+                    {openItem.choices && <Choices {...choice} openItem={openItem}/>}
                     <TotalPrice>
                         <span>Итоговая цена:</span> 
                         <span>{addCurrency(countTotalPrice(order))}</span>
                     </TotalPrice>
-                    <Button onClick={addToOrder}>Добавить</Button>
+                    <Button disabled={openItem.choices && !order.choosen}
+                        onClick={isEdit ? editOrder : addToOrder}>{isEdit ? "Редактировать" : "Добавить"}</Button>
                 </Content>
             </Modal>
         </Overlay>
