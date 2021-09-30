@@ -36,6 +36,8 @@ const H1 = styled.h1`
 const Logo = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-direction: column;
 `;
 
 const ImgLogo = styled.img`
@@ -47,15 +49,31 @@ const ImgSign = styled.img`
     margin-bottom: 5px;
 `;
 
-export const NavBar = () => (
+const LogOut = styled.p`
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 10px;
+`
+const LogOutSmall = styled.p`
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+`
+
+export const NavBar = ({authentication, logIn, logOut}) => (
     <NavBarStyled>
         <Logo>
             <ImgLogo src={logo} alt="logo" />
             <H1>MrDonald's</H1>
         </Logo>
-        <EnterBtnStyled>
+        {!authentication ? <EnterBtnStyled onClick={logIn}>
             <ImgSign src={sign} alt="sign" />
-            Войти
-        </EnterBtnStyled>
+            <LogOutSmall>Войти</LogOutSmall>
+        </EnterBtnStyled> : 
+            <EnterBtnStyled>
+                <LogOut>{authentication.displayName}</LogOut>
+                <LogOutSmall onClick={logOut}>Выйти</LogOutSmall>
+            </EnterBtnStyled>
+        }
     </NavBarStyled>
 );

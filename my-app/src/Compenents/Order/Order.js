@@ -2,12 +2,14 @@ import React from "react";
 import styled from 'styled-components';
 
 import { addCurrency } from "../Functions/secondaryFunction";
+import { countTotalPrice as total } from '../Functions/secondaryFunction';
 
 import { Button } from "../Styles/Button";
 
+import { projection } from "../Functions/secondaryFunction";
+
 import { ListOfOrders } from "./ListOfOrders";
 
-import { countTotalPrice as total } from '../Functions/secondaryFunction';
 
 const Title = styled.h2`
     text-align: center;
@@ -52,9 +54,35 @@ const TotalStyled = styled.div`
     text-transform: uppercase;
 `;
 
-export const Order = ({orders, deleteOrder, setOpenItem}) => {
+const rulesData = {
+    name: ['name'],
+    price: ['price'],
+    count: ['count'],
+    toppings: ['topping', items => items ? items.filter(item => item.checked).map(item => item.name) : "No toppings"],
+    choosen: ['choosen', item => item || "No choices"],
+}
+
+export const Order = ({orders, setOrders, deleteOrder, setOpenItem, authentication, logIn, firebaseDatabase}) => {
     const countTotalPrice = () => orders.reduce((sum, order) => sum + total(order), 0 );
     const countTotalCount = () => orders.reduce((counter, order) => counter + order.count, 0 );
+    const placeOrder = () => {
+        if(!authentication){
+            logIn();
+        }else {
+            sendOrder();
+        }
+    }
+
+    const sendOrder = () => {
+        const newOrder = orders.map(projection(rulesData));
+        firebaseDatabase().ref('orders').push().set({
+            clientName: authentication.displayName,
+            email:  authentication.email,
+            order: newOrder,
+        });
+        setOrders([]);
+    }
+
     return(
         <OrderStyled>
             <Title>Ваш заказ</Title>
@@ -67,7 +95,7 @@ export const Order = ({orders, deleteOrder, setOpenItem}) => {
                 <p style={{flex: "0 1 29%"}}>{addCurrency(countTotalPrice())}</p>
                 <p style={{flex: "0 1 7%"}}></p>
             </TotalStyled>
-            <Button>Оформить</Button>
+            <Button disabled={!orders.length} onClick={placeOrder}>Оформить</Button>
         </OrderStyled>
         )
 };
