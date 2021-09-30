@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from 'styled-components';
 
+import { Context } from "../Functions/context";
 import logo from '../../images/logo.svg';
 import sign from '../../images/sign.svg';
 
@@ -37,7 +38,6 @@ const Logo = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
 `;
 
 const ImgLogo = styled.img`
@@ -60,20 +60,22 @@ const LogOutSmall = styled.p`
     cursor: pointer;
 `
 
-export const NavBar = ({authentication, logIn, logOut}) => (
-    <NavBarStyled>
-        <Logo>
-            <ImgLogo src={logo} alt="logo" />
-            <H1>MrDonald's</H1>
-        </Logo>
-        {!authentication ? <EnterBtnStyled onClick={logIn}>
-            <ImgSign src={sign} alt="sign" />
-            <LogOutSmall>Войти</LogOutSmall>
-        </EnterBtnStyled> : 
-            <EnterBtnStyled>
-                <LogOut>{authentication.displayName}</LogOut>
-                <LogOutSmall onClick={logOut}>Выйти</LogOutSmall>
-            </EnterBtnStyled>
-        }
-    </NavBarStyled>
-);
+export const NavBar = () =>{
+    const {auth: {authentication, logIn, logOut}} = useContext(Context);
+    return(<NavBarStyled>
+            <Logo>
+                <ImgLogo src={logo} alt="logo" />
+                <H1>MrDonald's</H1>
+            </Logo>
+            {!authentication ? <EnterBtnStyled onClick={logIn}>
+                <ImgSign src={sign} alt="sign" />
+                <LogOutSmall>Войти</LogOutSmall>
+            </EnterBtnStyled> : 
+                <EnterBtnStyled>
+                    <LogOut>{authentication.displayName}</LogOut>
+                    <LogOutSmall onClick={logOut}>Выйти</LogOutSmall>
+                </EnterBtnStyled>
+            }
+        </NavBarStyled>
+    )
+};

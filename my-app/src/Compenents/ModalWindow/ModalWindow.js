@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from 'styled-components';
 
 import { addCurrency } from "../Functions/secondaryFunction";
@@ -6,6 +6,7 @@ import { countTotalPrice } from "../Functions/secondaryFunction";
 import { useToppings } from "../Hooks/useToppings";
 import {useCount} from "../Hooks/useCount";
 import { useChoices } from "../Hooks/useChoices";
+import { Context } from "../Functions/context";
 
 import { Button } from "../Styles/Button";
 import { CountItem } from "./CountItem";
@@ -14,7 +15,7 @@ import { Choices } from "./Choices";
 
 
 
-const Overlay = styled.div`
+export const Overlay = styled.div`
     position: fixed;
     top: 0;
     left: 0;
@@ -63,7 +64,10 @@ const TotalPrice = styled.div`
     `;
 
 
-export const ModalWindow = ({openItem, setOpenItem, orders, setOrders}) => {
+export const ModalWindow = () => {
+
+    const {openItem: {openItem, setOpenItem}, orders: {orders, setOrders}} = useContext(Context);
+    
     const closeModal = e => {
         if(e.target.id === "overlay"){
             setOpenItem(null);

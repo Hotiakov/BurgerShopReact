@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Button = styled.button`
+    display: block;
     margin: 0 auto;
     width: 250px;
     padding: 20px;

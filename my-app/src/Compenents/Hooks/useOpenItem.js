@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useTitle } from "./useTitle";
 
 export const useOpenItem = () => {
     const [openItem, setOpenItem] = useState(null);
-
-    useEffect(() => {
-        if(openItem){
-            document.title = openItem.name;
-        } else {
-            document.title = "MRDonalds";
-        }
-    }, [openItem]);
-
+    
+    useTitle(openItem);
+    
     return {openItem, setOpenItem};
 }

@@ -1,36 +1,44 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from 'styled-components';
 
-import dbMenu from "../DBMenu";
+import { useFetch } from "../Hooks/useFetch";
+import { Context } from "../Functions/context";
 
 import { ListItem } from "./ListItem";
-
 import { MenuBanner } from "./MenuBanner";
+import { Preloader } from "./Preloader";
 
 const MenuStyled = styled.main`
-    background-color: #ccc;
+    position: relative;
     margin-top: 80px;
     margin-left: 380px;
+    background-color: #ccc;
 `;
 
 const Header = styled.h2`
     margin-bottom: 10px;
 `;
 
-export const Menu = ({setOpenItem}) => (
-    <MenuStyled>
+export const Menu = () => {
+    const res = useFetch();
+    const {openItem: {setOpenItem}} = useContext(Context);
+    const dbMenu = res.response;
+    
+    return (<MenuStyled>
         <MenuBanner/>
-
-        <section style={{padding: "0 30px"}}>
-            <Header>Бургеры</Header>
-            <ListItem itemList={dbMenu.burger} setOpenItem={setOpenItem}/>
-        </section>
-
-        <section style={{padding: "0 30px"}}>
-            <Header>Напитки и Снэки</Header>
-            <ListItem itemList={dbMenu.other} setOpenItem={setOpenItem}/>
-        </section>
-    </MenuStyled>
-
-
-);
+        { res.response ?
+            <>
+                <section style={{padding: "0 30px"}}>
+                    <Header>Бургеры</Header>
+                    <ListItem itemList={dbMenu.burger} setOpenItem={setOpenItem}/>
+                </section>
+                <section style={{padding: "0 30px"}}>
+                    <Header>Напитки и Снэки</Header>
+                    <ListItem itemList={dbMenu.other} setOpenItem={setOpenItem}/>
+                </section>
+            </> : res.error ?
+                <div>Произошла ошибка:( Мы уже её фиксим!</div>
+                : <Preloader/>
+        }
+    </MenuStyled>);
+};

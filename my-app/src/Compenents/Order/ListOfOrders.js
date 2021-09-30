@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useContext} from "react";
 import styled from 'styled-components';
 
 import { addCurrency } from "../Functions/secondaryFunction";
-
-import trash from '../../images/trash.svg';
-
 import { countTotalPrice as total } from '../Functions/secondaryFunction';
 
+import { Context } from "../Functions/context";
+
+import trash from '../../images/trash.svg';
 
 const Title = styled.div`
     flex: 1 0 55%;
@@ -34,7 +34,9 @@ const toppingFilter = topping => {
     return topping && topping.filter(item => item.checked).map(item => item.name).join(', ');
 }
 
-const ListItem = ({order, index, deleteOrder, setOpenItem}) => (
+const ListItem = ({order, index}) => {
+    const {orders: {deleteOrder}, openItem: {setOpenItem}} = useContext(Context);
+    return(
     <LI onClick={e => {
             if(!e.target.closest('.trash'))
                 setOpenItem({...order, index})
@@ -49,7 +51,8 @@ const ListItem = ({order, index, deleteOrder, setOpenItem}) => (
         <span style={{flex: "1 0 29%"}}>{addCurrency(total(order))}</span>
         <div className="trash" style={{flex: "1 0 7%", cursor: 'pointer'}} onClick={() => deleteOrder(index)}><img style={{height: "100%"}} src={trash} alt="Удалить"/></div>
     </LI>
-);
+)
+};
 
 const ListOfOrdersStyled = styled.ul`
     flex: 1 0 55%;
@@ -57,9 +60,12 @@ const ListOfOrdersStyled = styled.ul`
     overflow-y: auto;
 `
 
-export const ListOfOrders = ({orders, deleteOrder, setOpenItem}) => (
-    <ListOfOrdersStyled>
-        {orders.map((order, index) => <ListItem key={index} index={index} 
-        order={order} deleteOrder={deleteOrder} setOpenItem={setOpenItem}/>)}
-    </ListOfOrdersStyled>
-); 
+export const ListOfOrders = () => {
+    const {orders: {orders}} = useContext(Context);
+    return(
+        <ListOfOrdersStyled>
+            {orders.map((order, index) => <ListItem key={index} index={index} 
+            order={order}/>)}
+        </ListOfOrdersStyled>
+    )
+}; 
